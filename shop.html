@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品陳列</title>
+    <!-- 引入 Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- 你的自訂樣式 -->
+    <link rel="stylesheet" href="style888.css">
+
+    <style>
+        /* 自定義 Single Product Area 的寬度和高度 */
+        .single-product-area {
+            transition: box-shadow 0.3s ease;
+            border-radius: 20px;
+            /* 添加過渡效果 */
+        }
+
+        /* 保持 Product Image 在容器中居中，並控制圖片的填充方式 */
+        .product-img {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            /* 保持圖片比例並填充整個容器，超出的部分會被裁剪 */
+        }
+
+        /* 滑鼠懸停時的陰影效果 */
+        .single-product-area:hover {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            /* 添加陰影效果 */
+            transform: scale(1.05);
+            /* 略微放大 */
+        }
+
+        .card-image {
+            width: 100%;
+            height: 250px;
+            /* 這裡可以調整您想要的固定高度 */
+            background-image: url('./圖庫/500.png');
+            background-size: 100% 100%;
+            /* 確保背景圖片填滿div */
+            background-repeat: no-repeat;
+            /* 添加圓角效果 */
+            border-radius: 20px;
+
+        }
+
+        /* 讓商品卡片中圖片範圍長一點，文字範圍小一點 */
+        .card-image.flex-grow-1 {
+            height: 300px;
+        }
+
+        .card-body.flex-grow-0 {
+            height: 30px;
+        }
+
+        .shopping-cart-btn {
+
+
+            padding: 10px;
+            border: none;
+            border-radius: 50%;
+            font-size: 3em;
+            cursor: pointer;
+            position: absolute;
+            right: 100px;
+            top: 20px;
+        }
+
+        .cart-item-count {
+
+
+            padding: 10px;
+            border: none;
+            border-radius: 30%;
+            font-size: 0.2rem;
+            color: white;
+            background-color: rgb(238, 38, 61);
+          
+            position: absolute;
+            right: 80px;
+            top: 30px;
+           
+        }
+
+        .col-md-3 {
+            margin-right: 90px;
+        }
+        /* 自訂 Modal 彈出視窗的樣式 */
+.modal-dialog.modal-dialog-end {
+  margin-left: auto; /* 靠右邊對齊 */
+  margin-right: 0px; /* 可自行調整與右邊的間距 */
+  margin-top: 0px;
+}
+
+/* 調整 Modal 彈出時的寬度 */
+@media (min-width: 500px) {
+  .modal-dialog.modal-dialog-end {
+    max-width: 30%; /* 可自行調整寬度 */
+   
+  }
+}
+.modal-content {
+  height: 80vh; /* 調整為你需要的高度，這裡使用 vh 單位表示視窗高度的百分比 */
+}
+.modal img
+{
+width: 60px;
+}
+
+
+    </style>
+</head>
+
+<body>
+    <div class="header-container">
+        <h2>儲值點數</h2></div> 
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-3">
+                
+                    <!-- 價格範圍 -->
+                    <div class="form-group">
+                        <label for="priceRange">價格範圍：</label>
+                        <br>
+                        <input type="range" class="form-control-range" id="priceRange" min="0" max="100" step="1">
+                        <span id="priceValue">0</span> <!-- 顯示當前價格值 -->
+                    </div>
+                </div>
+  
+          
+            <div class="col-md-3">
+                <!-- 排序方式選單 -->
+                <div class="form-group">
+                    <label for="sortSelect">排序方式：</label>
+                    <select class="form-control" id="sortSelect">
+                        <option value="priceLowToHigh">價格由低到高</option>
+                        <option value="priceHighToLow">價格由高到低</option>
+                        <option value="nameAscending">名稱遞增</option>
+                        <option value="nameDescending">名稱遞減</option>
+                        <!-- 添加更多的選項，根據您的需求 -->
+                    </select>
+                </div>
+            </div> 
+         </div>
+         
+            <div class="col-md-3 text-right"> <!-- 使用 text-right 來靠右對齊 -->
+                <!-- 購物車按鈕  跳出視窗-->
+                <a style="color: rgb(16, 15, 15);" href="#" type="button" data-bs-toggle="modal" data-bs-target="#cartModal" class="shopping-cart-btn">
+                    <i class='bx bxs-cart'></i>
+                </a>
+                <span class="cart-item-count">0</span>
+            </div>
+        
+    
+    <!-- 跳出視窗 -->
+    <div class="modal fade" id="cartModal">
+        <div class="modal-dialog modal-dialog-end">
+            <div class="modal-content">
+                <!-- header -->
+                <div class="modal-header">
+                    <h3>購物車</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <!-- body -->
+                <div class="modal-body">
+                    <table class="table table-striped mt-5">
+                        <thead align="center">
+                            <tr>
+                                <td></td>
+                                <td>商品</td>
+                                <td>單價</td>
+                                <td>數量</td>
+                                <td>小計</td>
+                                <td>刪除</td>
+                            </tr>
+                        </thead>
+                        <tbody align="center">
+                            <tr>
+                                <td><img class="img-fluid" src="/新版點數圖/500點數.png"></td>
+                                <td>500元點數</td>
+                                <td>500元</td>
+                                <td><select name="" id=""></select></td>
+                                <td>500元</td>
+                                <td><a href=""><i class='bx bx-trash bx-tada'
+                                            style='color:#ea0b0b ; font-size: 2rem'></i></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><img class="img-fluid" src="path_to_image2.jpg"></td>
+                                <td>1000元點數</td>
+                                <td>1000元</td>
+                                <td><select name="" id=""></select></td>
+                                <td>500元</td>
+                                <td><i class='bx bx-trash bx-tada' style='color:#ea0b0b ; font-size: 2rem'></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                     
+                    
+                </div>
+                <!-- footer -->
+                <div class="modal-footer"> 
+                    <h5 align="right">Total:</h5>            
+                        <input type="submit" value="buynow" class="btn btn-primary" />                   
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <br>
+    <hr>
+   <!-- 所有商品區域 -->
+   <div class="col-12 col-md-8 col-lg-12 justify-content-center">
+    <div class="shop-products-area">
+        <div class="row ">
+            <!-- 單個商品區域 -->
+            <div class="col-12 col-sm-4 col-lg-3">
+                <div class="card mb-4 single-product-area">
+                    <div class="card-image flex-grow-1" style="background-image: url('/新版點數圖/5000+500點數.png');">
+                        <a class="btn btn-danger" style="border-radius: 20px;">熱銷</a>
+                    </div>
+                    <!-- <img src="./圖庫/500.png" class="card-img-top" alt="商品 1"> -->
+                    <div class="card-body flex-grow-0">
+                        <div class="text-center">
+                            <h5 class="card-title">仙人掌花</h5>
+                        </div>
+                        <h6 class="text-center">$10.99</h6>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 d-flex justify-content-end">
+                        <!-- 將<i>元素放在右邊最下面 -->
+                        <a href="" style="color: black;"><i class='bx bxs-shopping-bag'
+                                style="font-size: 2em; margin-left: auto;"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 在這裡添加更多的商品卡片 -->
+            <!-- 每個商品卡片都添加 flex-grow-1 類別，讓圖片佔滿可用空間 -->
+            <!-- 同時添加 flex-grow-0 類別，讓文字只佔用所需空間 -->
+            <div class="col-12 col-sm-4 col-lg-3">
+                <div class="card mb-4 single-product-area">
+                    <div class="card-image flex-grow-1" style="background-image: url('./新版點數圖/500點數.png');"></div>
+                    <!-- <img src="./圖庫/500.png" class="card-img-top" alt="商品 1"> -->
+                    <div class="card-body flex-grow-0">
+                        <div class="text-center">
+                            <h5 class="card-title">仙人掌花</h5>
+                        </div>
+                        <h6 class="text-center">$10.99</h6>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 d-flex justify-content-end">
+                        <!-- 將<i>元素放在右邊最下面 -->
+                        <a href="" style="color: black;"><i class='bx bxs-shopping-bag'
+                                style="font-size: 2em; margin-left: auto;"></i></a>
+                    </div>
+                </div>
+            </div>
+            <!-- 添加更多商品卡片 -->
+            <!-- 每個商品卡片都添加 flex-grow-1 類別，讓圖片佔滿可用空間 -->
+            <!-- 同時添加 flex-grow-0 類別，讓文字只佔用所需空間 -->
+            <div class="col-12 col-sm-4 col-lg-3">
+                <div class="card mb-4 single-product-area">
+                    <div class="card-image flex-grow-1" style="background-image: url('./新版點數圖/1000點數.png');"></div>
+                    <!-- <img src="./圖庫/500.png" class="card-img-top" alt="商品 1"> -->
+                    <div class="card-body flex-grow-0">
+                        <div class="text-center">
+                            <h5 class="card-title">仙人掌花</h5>
+                        </div>
+                        <h6 class="text-center">$10.99</h6>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 d-flex justify-content-end">
+                        <!-- 將<i>元素放在右邊最下面 -->
+                        <a href="" style="color: black;"><i class='bx bxs-shopping-bag'
+                                style="font-size: 2em; margin-left: auto;"></i></a>
+                    </div>
+                </div>
+            </div>
+            <!-- 添加更多商品卡片 -->
+            <!-- 每個商品卡片都添加 flex-grow-1 類別，讓圖片佔滿可用空間 -->
+            <!-- 同時添加 flex-grow-0 類別，讓文字只佔用所需空間 -->
+            <div class="col-12 col-sm-4 col-lg-3">
+                <div class="card mb-4 single-product-area">
+                    <div class="card-image flex-grow-1" style="background-image: url('./圖庫/images.jpg');"></div>
+                    <!-- <img src="./圖庫/500.png" class="card-img-top" alt="商品 1"> -->
+                    <div class="card-body flex-grow-0">
+                        <div class="text-center">
+                            <h5 class="card-title">仙人掌花</h5>
+                        </div>
+                        <h6 class="text-center">$10.99</h6>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 d-flex justify-content-end">
+                        <!-- 將<i>元素放在右邊最下面 -->
+                        <a><i class='bx bxs-shopping-bag' style="font-size: 2em; margin-left: auto;"></i></a>
+                    </div>
+                </div>
+            </div>
+            <!-- 添加更多商品卡片 -->
+            <!-- 每個商品卡片都添加 flex-grow-1 類別，讓圖片佔滿可用空間 -->
+            <!-- 同時添加 flex-grow-0 類別，讓文字只佔用所需空間 -->
+            <div class="col-12 col-sm-4 col-lg-3">
+                <div class="card mb-4 single-product-area">
+                    <div class="card-image flex-grow-1" style="background-image: url('./圖庫/下載2.jpg');"></div>
+                    <!-- <img src="./圖庫/500.png" class="card-img-top" alt="商品 1"> -->
+                    <div class="card-body flex-grow-0">
+                        <div class="text-center">
+                            <h5 class="card-title">仙人掌花</h5>
+                        </div>
+                        <h6 class="text-center">$10.99</h6>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 d-flex justify-content-end">
+                        <!-- 將<i>元素放在右邊最下面 -->
+                        <a><i class='bx bxs-shopping-bag' style="font-size: 2em; margin-left: auto;"></i></a>
+                    </div>
+                </div>
+            </div>
+            <!-- 添加更多商品卡片 -->
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body>
+
+</html>

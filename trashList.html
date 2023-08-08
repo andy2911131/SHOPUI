@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>資源回收桶</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <!--box icons-->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="./style2.css" />
+    <style>
+        /* 將外層容器設置為相對定位 */
+        .header-container {
+            position: relative;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header-container">
+        <h2>資源回收桶</h2>
+    </div>
+
+    <!-- 新增按鈕區域 -->
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-2">
+                <button type="button" class="btn btn-danger">永久刪除</button>
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-warning">清空垃圾車</button>
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-success">復原</button>
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-primary">回到上一頁</button>
+            </div>
+        </div>
+    
+    <br>
+
+    <table id="table" class="table table-striped mt-3">
+        <thead align="center">
+            <tr>
+                <td><i class='bx bx-checkbox-minus' style="font-size: 1.3rem;"></i></td>
+                <td>商品</td>
+                <td>類別</td>
+                <td>復原</td>
+                <td>永久刪除</td>
+            </tr>
+        </thead>
+        <tbody align="center">
+            <tr>
+                <td><input type="checkbox" name="color1" value="blue"></td>
+                <td>500元</td>
+                <td>點數</td>
+                <td><i class='bx bx-reply' style="font-size: 2rem;"></i></td>
+                <td><i class='bx bx-trash bx-tada' style='color:#ea0b0b ; font-size: 2rem' ></i></td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="color1" value="blue"></td>
+                <td>1000元</td>
+                <td>點數商品</td>
+                <td><i class='bx bx-reply' style="font-size: 2rem;"></i></td>
+                <td><i class='bx bx-trash bx-tada' style='color:#ea0b0b ; font-size: 2rem' ></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+
+</html>
